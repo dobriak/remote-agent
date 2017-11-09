@@ -15,7 +15,6 @@
         "containerPort": 8080,
         "hostPort": 0,
         "protocol": "tcp",
-        "servicePort": 10000,
         "name": "ro1"
       }
     ],
