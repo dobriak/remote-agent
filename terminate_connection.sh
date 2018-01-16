@@ -1,6 +1,27 @@
 #!/bin/bash
-echo "Killing connection and sleeping"
-TZ=America/Phoenix date
-./bip.sh 10.0.0.167 ; ./bip.sh 10.0.1.103 ; ./bip.sh 10.0.2.117 ; sleep 1800s ; ./bip.sh 10.0.0.167 -d ; ./bip.sh 10.0.1.103 -d ; ./bip.sh 10.0.2.117 -d
-echo "Done sleeping"
-TZ=America/Phoenix date
+MYTZ="America/Phoenix"
+if [[ $# -lt 2 ]]; then
+    echo "Missing sleep period and IPs"
+    echo "Format: ${0} <sleep seconds> <IP1>[ <IP2> .. <IPn>]"
+    exit 1
+fi
+interval=${1}
+shift
+for ip in "${@}"; do
+    echo "Terminating connection to ${ip}"
+    ./blockip.sh ${ip}
+done
+echo "======================================"
+echo "* Sleeping for ${interval} seconds..."
+echo "======================================"
+TZ=${MYTZ} date
+sleep ${interval}
+echo "======================"
+echo "* Finished sleeping. *"
+echo "======================"
+TZ=${MYTZ} date
+for ip in "${@}"; do
+    echo "Restoring connection to ${ip}"
+    ./blockip.sh ${ip} -d
+done
+echo "Done."
