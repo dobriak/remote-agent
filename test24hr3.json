@@ -1,0 +1,50 @@
+{
+  "id": "/test24hr3",
+  "instances": 1,
+  "container": {
+    "type": "DOCKER",
+    "volumes": [],
+    "docker": {
+      "image": "brndnmtthws/nginx-echo-headers"
+    },
+    "portMappings": [
+      {
+        "containerPort": 8080,
+        "hostPort": 0,
+        "protocol": "tcp",
+        "name": "test24hr3"
+      }
+    ]
+  },
+  "cpus": 0.1,
+  "mem": 128,
+  "requirePorts": false,
+  "networks": [
+    {
+      "mode": "container/bridge"
+    }
+  ],
+  "healthChecks": [
+    {
+      "portIndex": 0,
+      "protocol": "MESOS_HTTP",
+      "path": "/"
+    }
+  ],
+  "fetch": [],
+  "constraints": [
+    [
+      "hostname",
+      "UNIQUE"
+    ],
+    [
+      "hospital",
+      "CLUSTER",
+      "kansas"
+    ]
+  ],
+  "unreachableStrategy": {
+    "inactiveAfterSeconds": 86400,
+    "expungeAfterSeconds": 86400
+  }
+}
